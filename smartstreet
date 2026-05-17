@@ -1,0 +1,50 @@
+int ldrPin = A0;
+int pirPin = 2;
+int ledPin = 9;
+
+int ldrValue = 0;
+int motionStatus = 0;
+
+void setup()
+{
+  pinMode(pirPin, INPUT);
+  pinMode(ledPin, OUTPUT);
+
+  Serial.begin(9600);
+}
+
+void loop()
+{
+  // Read LDR value
+  ldrValue = analogRead(ldrPin);
+
+  // Read PIR sensor
+  motionStatus = digitalRead(pirPin);
+
+  Serial.print("LDR Value: ");
+  Serial.println(ldrValue);
+
+  // DAY TIME
+  if (ldrValue > 700)
+  {
+    analogWrite(ledPin, 0);   // LED OFF
+  }
+
+  // NIGHT TIME
+  else
+  {
+    // MOVEMENT DETECTED
+    if (motionStatus == HIGH)
+    {
+      analogWrite(ledPin, 255); // FULL brightness
+    }
+
+    // NO MOVEMENT
+    else
+    {
+      analogWrite(ledPin, 80); // DIM brightness
+    }
+  }
+
+  delay(100);
+}
